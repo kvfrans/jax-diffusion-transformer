@@ -1,5 +1,8 @@
-from localutils.debugger import enable_debug
-enable_debug()
+try: # For debugging
+    from localutils.debugger import enable_debug
+    enable_debug()
+except ImportError:
+    pass
 
 from typing import Any
 import jax.numpy as jnp
