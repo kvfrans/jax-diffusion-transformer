@@ -17,8 +17,6 @@ def name(filename):
 
 class Checkpoint:
     def __init__(self, filename, parallel=True):
-        if 'gs://rll' in filename:
-            filename = filename.replace('gs://rll', 'gs://rll-tpus-kvfrans')
         self._filename = filename
         self._values = {}
         self._parallel = parallel

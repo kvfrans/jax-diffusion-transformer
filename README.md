@@ -1,8 +1,14 @@
 # jax-diffusion-transformer
-Implementation of Diffusion Transformer (DiT) in JAX
+Implementation of [Diffusion Transformer (DiT)](https://arxiv.org/abs/2212.09748) in JAX. Ported from the official [Pytorch implementation](https://github.com/facebookresearch/DiT).
 
 ## Installation
 First, clone the repo. Then you can install the conda environment using `conda env create -f environment.yml`. You will need to compile the TFDS datasets for `imagenet2012` or `celebahq`, see [this repo](https://github.com/kvfrans/tfds_builders).
+
+## Details
+
+This implementation implements the standard sizings used in the paper `(DiT-{S,B,L,XL})`. The patch size can also be adjusted independently. The patch size defines a downscaling factor for the input image, which is then flattened. For example, using a patch size of 8, a 256x256 image would become a latent of size 32x32, which is then treated as a vector of length `32x32 = 1024` in the transformer backbone. Images can be processed by a pretrained VAE to reduce the input dimension. The standard choice is to use the Stable Diffusion VAE, which downsamples by 8x.
+
+This code was tested on TPU-v3 machines. It loads a copy of the full model onto each device, loads different data onto each device, then averages the gradients. 
 
 ## Usage
 To run training code, use `train_diffusion.py`. Evalute FID on a trained model with `eval_fid.py`.
