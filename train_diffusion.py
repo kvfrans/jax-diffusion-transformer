@@ -211,21 +211,15 @@ def main(_):
             dataset = tfds.as_numpy(dataset)
             dataset = iter(dataset)
             return dataset
-        elif 'celebahq' in FLAGS.dataset_name:
+        elif FLAGS.dataset_name == 'celebahq256':
             def deserialization_fn(data):
                 image = data['image']
-                if 'celebahq256' in FLAGS.dataset_name:
-                    image = tf.image.resize(image, (256, 256), antialias=True)
-                elif 'celebahq128' in FLAGS.dataset_name:
-                    image = tf.image.resize(image, (128, 128), antialias=True)
-                else:
-                    raise ValueError(f"Unknown dataset {FLAGS.dataset_name}")
                 image = tf.cast(image, tf.float32)
                 image = image / 255.0
                 image = (image - 0.5) / 0.5 # Normalize to [-1, 1]
                 return image,  data['label']
 
-            dataset = tfds.load('celeba256', split='train', data_dir='gs://rll-tpus-kvfrans/tfds')
+            dataset = tfds.load('celebahq256', split='train')
             dataset = dataset.map(deserialization_fn, num_parallel_calls=tf.data.AUTOTUNE)
             dataset = dataset.shuffle(10000, seed=42, reshuffle_each_iteration=True)
             dataset = dataset.repeat()
