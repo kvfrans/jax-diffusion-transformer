@@ -40,3 +40,7 @@ DiT-B Imagenet, CFG=4
 
 DiT-B CelebAHQ256
 ![](data/example_celeba.png)
+
+## Acknowledgements
+
+We thank Google TPU Research Cloud (TRC) for granting us access to TPUs for research.
